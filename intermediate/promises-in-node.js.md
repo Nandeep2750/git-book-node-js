@@ -2,6 +2,14 @@
 
 Promises in Node.js are objects representing the eventual completion (or failure) of an asynchronous operation and its resulting value. They provide a more structured and cleaner way to handle asynchronous operations compared to callbacks, helping to avoid issues such as "callback hell."
 
+Promises in Javascript are a way to handle asynchronous operations in Node.js. It allows us to return a value from an asynchronous function like a synchronous function. When we return something from an asynchronous method it returns a promise which can be used to consume the final value when it is available in the future with the help of `then()` method or `await` inside of async functions. The syntax to create a promise is mentioned below.
+
+```javascript
+const promise = new Promise(function(resolve, reject){
+     // code logic
+});
+```
+
 ## **Basic Concept**
 
 A Promise can be in one of three states:
@@ -51,6 +59,105 @@ console.log('This will run before the Promise is settled');
    * The `catch` method is used to handle any errors (rejections).
 3. **Non-blocking behaviour**:
    * The message `console.log('This will run before the Promise is settled');` demonstrates that the Promise runs asynchronously. This message is logged before the Promise is settled.
+
+## Prevent Callback Hell
+
+First of all, let's consider an example that we've seen in callback hell. Here is the solution to that callback hell using promises.
+
+```javascript
+const readFile = (filename) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(filename, 'utf8', (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};
+
+readFile('file1.txt')
+    .then((data1) => readFile('file2.txt'))
+    .then((data2) => readFile('file3.txt'))
+    .then((data3) => {
+        // Handle data from file3
+    })
+    .catch((err) => {
+        console.error('Error:', err);
+    });
+
+```
+
+**Example:** In the code example mentioned below, we simulate an asynchronous add operation with the help of setTimeout().&#x20;
+
+* First, we create an add() function that takes three arguments of which two are the numbers that we want to add and the third one is the callback function which is called with the result of adding operations after 2 seconds. Then, we calculate the result of the addition of the first four natural numbers using a nested callback to simulate a callback hell.
+* After that, we **create an addPromise()** function that returns a promise and this promise is resolved after two seconds of calling the function. Then we consume the promise using the then() method and async/await.
+
+{% code title="Without Promise" %}
+```javascript
+// The callback function for the function is executed after two seconds with the result of the addition
+const add = function (a, b, callback) {
+    setTimeout(() => {
+        callback(a + b);
+    }, 2000);
+};
+
+// Using nested callbacks to calculate the sum of the first four natural numbers.
+add(1, 2, (sum1) => {
+    add(3, sum1, (sum2) => {
+        add(4, sum2, (sum3) => {
+            console.log(`Sum of the first 4 natural numbers using a callback is ${sum3}`);  // Sum of the first 4 natural numbers using callback is 10
+        });
+    });
+});
+
+```
+{% endcode %}
+
+{% code title="With Promise [then() method]" %}
+```javascript
+/* Use of Promise with then() for prevent callback hell */
+
+// This function returns a promise that will later be consumed to get the result of the addition
+const addPromise = function (a, b) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(a + b);
+        }, 2000);
+    });
+};
+
+// Consuming promises with the chaining of then() method and calculating the result
+addPromise(1, 2)
+    .then((sum1) => { return addPromise(3, sum1); })
+    .then((sum2) => { return addPromise(4, sum2); })
+    .then((sum3) => { console.log(`Sum of first 4 natural numbers using promise and then() is ${sum3}`); });
+```
+{% endcode %}
+
+{% code title="With Promise [async/await]" %}
+```javascript
+/* Use of Promise with async await to prevent callback hell */
+
+const addPromise = function (a, b) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(a + b);
+        }, 2000);
+    });
+};
+
+// Calculation of the result of addition by consuming the promise using async/await
+(async () => {
+    const sum1 = await addPromise(1, 2);
+    const sum2 = await addPromise(3, sum1);
+    const sum3 = await addPromise(4, sum2);
+
+    console.log(`Sum of first 4 natural numbers using promise and async/await is ${sum3}`);
+})();
+```
+{% endcode %}
 
 ## **Chaining Promises**
 

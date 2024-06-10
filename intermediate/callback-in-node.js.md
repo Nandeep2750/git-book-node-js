@@ -1,5 +1,7 @@
 # Callback in Node.js
 
+## What is Callback in Node.js?
+
 **A callback function is called after a given task.** It allows other code to be run in the meantime and prevents any blocking. Being an asynchronous platform, Node.js heavily relies on callbacks. All APIs in Node are written to support callbacks.
 
 **The callback is the asynchronous equivalent of a function. A callback function is called after a given task.** Node makes heavy use of callbacks. All the APIs of Node are written in such a way that they support callbacks.

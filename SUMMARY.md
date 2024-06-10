@@ -21,11 +21,9 @@
 
 * [Event Driven Programming](intermediate/event-driven-programming.md)
 * [Callback in Node.js](intermediate/callback-in-node.js.md)
-* [Callback Hell](intermediate/callback-hell.md)
-* [Prevent callback hell](intermediate/prevent-callback-hell.md)
+* [Callback Hell in Node.js](intermediate/callback-hell-in-node.js.md)
 * [Promises in Node.js](intermediate/promises-in-node.js.md)
-* [Advantages of using promises](intermediate/advantages-of-using-promises.md)
-* [Async Await](intermediate/async-await.md)
+* [Async/Await in Node.js](intermediate/async-await-in-node.js.md)
 * [EventEmitter](intermediate/eventemitter.md)
 * [Frameworks of Node.js](intermediate/frameworks-of-node.js.md)
 * [Different types of HTTP requests](intermediate/different-types-of-http-requests.md)
